@@ -50,9 +50,9 @@ public class RomiColor extends CommandBase {
   }
 
   private boolean setRed(boolean value){
-    /*if (m_redLED != null) { 
+    if (m_redLED != null) { 
       m_redLED.set(value);
-    }*/
+    }
     return true;
   }
 
