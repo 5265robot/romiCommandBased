@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class RomiColor extends CommandBase {
   private final char m_color;
-  //private final DigitalOutput m_redLED = new DigitalOutput(2);
+
+  private final DigitalOutput m_redLED = new DigitalOutput(2);
   //private final DigitalOutput m_greenLED = new DigitalOutput(1);
 
 
