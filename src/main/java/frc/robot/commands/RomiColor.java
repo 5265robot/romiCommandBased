@@ -8,11 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
 public class RomiColor extends CommandBase {
+  
+  private DigitalOutput m_redLED; // = new DigitalOutput(3);
+  private DigitalOutput m_greenLED; // = new DigitalOutput(1);
+
   private final char m_color;
-
-  private final DigitalOutput m_redLED = new DigitalOutput(2);
-  //private final DigitalOutput m_greenLED = new DigitalOutput(1);
-
+  public enum ChannelMode{
+    INPUT, OUTPUT
+  }
 
   /** Creates a new RomiColor. */
   public RomiColor(char color) {
@@ -49,17 +52,24 @@ public class RomiColor extends CommandBase {
     return false;
   }
 
-  private boolean setRed(boolean value){
+  public void OnBoardIO(ChannelMode dio1, ChannelMode dio2 ){
+    if (dio1 != ChannelMode.INPUT) {
+      m_greenLED = new DigitalOutput(1);
+    }
+    if (dio2 != ChannelMode.INPUT) {
+      m_redLED = new DigitalOutput(2);
+    }
+  };
+
+  private void setRed(boolean value){
     if (m_redLED != null) { 
       m_redLED.set(value);
     }
-    return true;
   }
 
-  private boolean setGreen(boolean value){
-    /*if (m_greenLED != null) { 
+  private void setGreen(boolean value){
+    if (m_greenLED != null) { 
       m_greenLED.set(value);
-    }*/
-    return true;
+    }
   }
 }
