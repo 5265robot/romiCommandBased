@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class RomiColor extends CommandBase {
   
+  // these are the lights on the Romi
   private DigitalOutput m_redLED; // = new DigitalOutput(3);
   private DigitalOutput m_greenLED; // = new DigitalOutput(1);
 
+  // not sure why the subsystem had this on it
   private final char m_color;
   public enum ChannelMode{
     INPUT, OUTPUT
@@ -19,7 +21,7 @@ public class RomiColor extends CommandBase {
 
   /** Creates a new RomiColor. */
   public RomiColor(char color) {
-    m_color = color;
+    m_color = color;  // we pass a single character: RYG to 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -30,6 +32,7 @@ public class RomiColor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //OnBoardIO(ChannelMode.OUTPUT, ChannelMode.OUTPUT);
     if (m_color == 'Y') {
       setRed(false);
       setGreen(false);
@@ -52,6 +55,8 @@ public class RomiColor extends CommandBase {
     return false;
   }
 
+  // calling this creates a resource already allocated error
+  // any new DigitalOutput channel creates the conflict
   public void OnBoardIO(ChannelMode dio1, ChannelMode dio2 ){
     if (dio1 != ChannelMode.INPUT) {
       m_greenLED = new DigitalOutput(1);

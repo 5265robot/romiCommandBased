@@ -44,6 +44,7 @@ public class RobotContainer {
     m_romiDrivetrain.setDefaultCommand(getArcadeDriveCommand());
 
     // examples of xbox buttons turning on and off the LEDs of the Romi
+    // this does not work - hasn't been figured out yet
     new JoystickButton(m_controller, xbox.xBoxRed.value).whenPressed(new RomiColor('R'));
     new JoystickButton(m_controller, xbox.xBoxGreen.value).whenPressed(new RomiColor('G'));
     new JoystickButton(m_controller, xbox.xBoxYellow.value).whenPressed(new RomiColor('Y'));
