@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.sensors.RomiGyro;
 
 public class RomiDrivetrain extends SubsystemBase {
   private static final double kCountsPerRevolution = 1440.0;
@@ -26,6 +28,13 @@ public class RomiDrivetrain extends SubsystemBase {
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
+  // Set up the Romi gyroscope
+  private final RomiGyro m_gyro = new RomiGyro();
+
+  // Set up the accelerometer
+  private final BuiltInAccelerometer m_accelerometer = new BuiltInAccelerometer();
+
+
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
@@ -38,18 +47,56 @@ public class RomiDrivetrain extends SubsystemBase {
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
   }
 
+  /* 
+  * encoder commands
+  */
   public void resetEncoders() {
     m_leftEncoder.reset();
     m_rightEncoder.reset();
   }
-
+  public int getLeftEncoderCount(){
+    return m_leftEncoder.get();
+  }
+  public int getRightEncoderCount(){
+    return m_rightEncoder.get();
+  }
   public double getLeftDistanceInch() {
     return m_leftEncoder.getDistance();
   }
-
   public double getRightDistanceInch() {
     return m_rightEncoder.getDistance();
   }
+  public double getAverageDistanceInch(){
+    return (getLeftDistanceInch() + getRightDistanceInch())/2.0;
+  }
+  /*
+   * acceleration about an axis
+   */
+  public double getAccelX(){
+    return m_accelerometer.getX();
+  }
+  public double getAccelY(){
+    return m_accelerometer.getY();
+  }
+  public double getAccelZ(){
+    return m_accelerometer.getZ();
+  }
+  /*
+   * current angle of the Romi around each axis
+   */
+  public double getGyroAngleX(){
+    return m_gyro.getAngleX();
+  }
+  public double getGyroAngleY(){
+    return m_gyro.getAngleY();
+  }  
+  public double getGyroAngleZ(){
+    return m_gyro.getAngleZ();
+  }
+  public void resetGyro(){
+    m_gyro.reset();
+  }
+
 
   @Override
   public void periodic() {
