@@ -71,7 +71,7 @@ public class RobotContainer {
       () -> m_romiDrivetrain.resetOdometry(exampleTrajectory.getInitialPose()),
       () -> ramseteCommand.andThen(() -> m_romiDrivetrain.tankDriveVolts(0, 0)), 
       m_romiDrivetrain));
-    }
+    
       
     m_chooser.addOption("Distance 1", new autoByDist1(m_romiDrivetrain));
 
