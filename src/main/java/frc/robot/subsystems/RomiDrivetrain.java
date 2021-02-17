@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sensors.RomiGyro;
 
@@ -34,6 +39,11 @@ public class RomiDrivetrain extends SubsystemBase {
   // Set up the accelerometer
   private final BuiltInAccelerometer m_accelerometer = new BuiltInAccelerometer();
 
+  // Odometry for tracking the robot pose
+  private final DifferentialDriveOdometry m_odometry;
+
+  // field diagram ??
+  private final Field2d m_field2d = new Field2d();
 
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
@@ -41,15 +51,35 @@ public class RomiDrivetrain extends SubsystemBase {
     m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
+    
+    // to get this to work, I had to implement Gyro in RomiGyro
+    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d());
+
+    // explain this please
+    SmartDashboard.putData("field", m_field2d);
   }
 
+  /*
+   * arcade drive
+   */
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
   }
 
+  /*
+   * tank drive
+   * individual values for left and right motors
+   * negative right voltage so that plus is always forward
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts){
+    m_leftMotor.setVoltage(leftVolts);
+    m_rightMotor.setVoltage(rightVolts);
+    m_diffDrive.feed();
+  }
+
   /* 
-  * encoder commands
-  */
+   * encoder commands
+   */
   public void resetEncoders() {
     m_leftEncoder.reset();
     m_rightEncoder.reset();
@@ -97,14 +127,65 @@ public class RomiDrivetrain extends SubsystemBase {
     m_gyro.reset();
   }
 
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+    // same as periodic ??
+    m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    // update the field
+    m_field2d.setRobotPose(getPose());
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // update the odometry
+    m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    // update the field
+    m_field2d.setRobotPose(getPose());
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+  // returns the current estimated Pose
+  public Pose2d getPose(){
+    return m_odometry.getPoseMeters();
   }
+
+  // returns current wheel speeds
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(),m_rightEncoder.getRate());
+  }
+
+  // resets odometry to a pose
+  public void resetOdometry(Pose2d pose){
+    resetEncoders();
+    m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+  }
+
+  // set max speed, which slows down the robot
+  public void setMaxOutput(double maxOutput){
+    m_diffDrive.setMaxOutput(maxOutput);
+  }
+
+  // zeroes the heading
+  public void zeroHeading(){
+    m_gyro.reset();
+  }
+
+  // returns the current heading
+  public double getHeading(){
+    return m_gyro.getRotation2d().getDegrees();
+  }
+
+  // returns the current turn rate
+  public double getTurnRate(){
+    return m_gyro.getRate();
+  }
+
+  // dif drive wheel speeds
+  // reset odometry
+  // set max output
+  // zero heading
+  // get heading
+  // get turn rate
+
 }

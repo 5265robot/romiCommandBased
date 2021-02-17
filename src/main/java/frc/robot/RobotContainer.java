@@ -6,8 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoTest1;
+import frc.robot.commands.autoByDist1;
+import frc.robot.commands.autoByRamseteTraj1;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.xbox;
@@ -23,6 +26,8 @@ public class RobotContainer {
   private final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
   private final XboxController m_controller = new XboxController(0);
 
+  // for the auto choice on smart dashboard
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private final AutoTest1 m_autoCommand = new AutoTest1(m_romiDrivetrain);
   
@@ -47,10 +52,14 @@ public class RobotContainer {
     new JoystickButton(m_controller, xbox.xBoxGreen.value).whenPressed(new RomiColor('G'));
     new JoystickButton(m_controller, xbox.xBoxYellow.value).whenPressed(new RomiColor('Y'));
     */
+//(m_controller.getRawButtonPressed(Constants.xBoxYellow));
 
+    // smart dashboard for auto
+    m_chooser.setDefaultOption("Trajectory 1", new autoByRamseteTraj1(m_romiDrivetrain));
+    m_chooser.addOption("Distance 1", new autoByDist1(m_romiDrivetrain));
 
+    
 
-    //(m_controller.getRawButtonPressed(Constants.xBoxYellow));
   }
 
   /**
