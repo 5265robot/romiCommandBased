@@ -52,7 +52,10 @@ public final class Constants {
     public static final class autoD1{
         // first distance -- speed then distance in inches
         // second turn -- speed then angle from 0 to 360
-        public static double dstA_sp = -0.5, dstA_dst = 10.0;
+        // positive speed is forward
+        // distance is ALWAYS positive
+        // angle is ALWAYS positive
+        public static double dstA_sp = 0.5, dstA_dst = 10.0;
         public static double trnA_sp = -0.5, trnA_ang = 90.0;
         public static double dstB_sp = -0.5, dstB_dst = 10.0;
         public static double trnB_sp = 0.5, trnB_ang = 90.0;
