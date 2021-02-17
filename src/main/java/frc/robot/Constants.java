@@ -20,8 +20,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 public final class Constants {
 
     public static final class xbox{
-    public static int xBoxMove = 5;
-    public static int xBoxTurn = 0;
+    public static int xBoxMove = 1;
+    public static int xBoxTurn = 4;
     public static XboxController.Button xBoxGreen = Button.kA;
     public static XboxController.Button xBoxYellow = Button.kY;
     public static XboxController.Button xBoxRed = Button.kB;
