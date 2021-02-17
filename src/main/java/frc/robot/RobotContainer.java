@@ -7,8 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.AutoTest1;
 import frc.robot.commands.autoByDist1;
 import frc.robot.commands.autoByRamseteTraj1;
 import frc.robot.subsystems.RomiDrivetrain;
@@ -28,8 +28,6 @@ public class RobotContainer {
 
   // for the auto choice on smart dashboard
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  private final AutoTest1 m_autoCommand = new AutoTest1(m_romiDrivetrain);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -58,8 +56,7 @@ public class RobotContainer {
     m_chooser.setDefaultOption("Trajectory 1", new autoByRamseteTraj1(m_romiDrivetrain));
     m_chooser.addOption("Distance 1", new autoByDist1(m_romiDrivetrain));
 
-    
-
+    SmartDashboard.putData(m_chooser);
   }
 
   /**
@@ -69,7 +66,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_chooser.getSelected();
   }
 
   public Command getArcadeDriveCommand(){

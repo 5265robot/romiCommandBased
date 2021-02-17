@@ -40,7 +40,7 @@ public class autoByRamseteTraj1 extends CommandBase {
       new SimpleMotorFeedforward(
           DriveConstants.ksVolts, 
           DriveConstants.kaVoltSecondsSquaredPerMeter,
-          DriveConstants.kaVoltSecondsSquaredPerMeter) ,         ),
+          DriveConstants.kaVoltSecondsSquaredPerMeter),
       DriveConstants.kDriveKinematics,
       10);
     config = new TrajectoryConfig(
