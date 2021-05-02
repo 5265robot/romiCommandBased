@@ -10,7 +10,10 @@ public class ArcadeDrive extends CommandBase{
     private final Supplier<Double> m_xAxisValue;
     private final Supplier<Double> m_zAxisValue;
 
-    public ArcadeDrive (RomiDrivetrain drivetrain, Supplier<Double> xAxis , Supplier<Double> zAxis){
+    public ArcadeDrive (
+            RomiDrivetrain drivetrain, 
+            Supplier<Double> xAxis , 
+            Supplier<Double> zAxis){
         m_drivetrain = drivetrain;
         m_xAxisValue = xAxis;
         m_zAxisValue = zAxis;
